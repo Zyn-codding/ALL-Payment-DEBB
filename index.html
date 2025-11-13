@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Portal</title>
+
+  <!-- Font Orbit -->
+  <link href="https://fonts.cdnfonts.com/css/orbitron" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at center, #0b0016, #000);
+      color: #fff;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Efek partikel */
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: #a020f0;
+      border-radius: 50%;
+      animation: float 10s infinite linear;
+      opacity: 0.6;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0) scale(1); opacity: 0.5; }
+      50% { opacity: 1; }
+      100% { transform: translateY(-800px) scale(0.5); opacity: 0; }
+    }
+
+    .container {
+      background: rgba(20, 0, 35, 0.85);
+      border: 2px solid #a020f0;
+      border-radius: 20px;
+      box-shadow: 0 0 25px #a020f0;
+      padding: 30px;
+      width: 340px;
+      text-align: center;
+      backdrop-filter: blur(10px);
+      z-index: 1;
+    }
+
+    h2 {
+      color: #c77dff;
+      text-shadow: 0 0 10px #a020f0;
+      margin-bottom: 20px;
+      font-size: 1.4rem;
+    }
+
+    .pay-btn {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 12px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 10px;
+      background: #a020f0;
+      color: #fff;
+      cursor: pointer;
+      transition: 0.3s;
+      box-shadow: 0 0 10px #a020f0;
+    }
+
+    .pay-btn:hover {
+      background: #c77dff;
+      box-shadow: 0 0 20px #c77dff;
+    }
+
+    .credit {
+      margin-top: 20px;
+      font-size: 0.8rem;
+      color: #a080ff;
+    }
+
+    /* Popup */
+    .popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      background: rgba(20, 0, 40, 0.95);
+      border: 2px solid #a020f0;
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 0 25px #a020f0;
+      color: #fff;
+      text-align: center;
+      width: 280px;
+      transition: 0.3s ease-in-out;
+      z-index: 2;
+    }
+
+    .popup.active {
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .popup h3 {
+      color: #c77dff;
+      margin-bottom: 10px;
+    }
+
+    .popup p {
+      font-size: 0.95rem;
+    }
+
+    .popup img {
+      width: 200px;
+      border-radius: 10px;
+      border: 2px solid #a020f0;
+      margin-top: 10px;
+    }
+
+    .close-btn {
+      background: #a020f0;
+      color: #fff;
+      border: none;
+      padding: 8px 16px;
+      margin-top: 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 0 10px #a020f0;
+      transition: 0.3s;
+    }
+
+    .close-btn:hover {
+      background: #c77dff;
+      box-shadow: 0 0 20px #c77dff;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Pilih Metode Pembayaran</h2>
+    <button class="pay-btn" onclick="showPopup('DANA', '085655967536')">💙 DANA</button>
+    <button class="pay-btn" onclick="showPopup('OVO', 'Mohon Maaf DEBB Tidak Menyediakan Payment Via OVO')">💜 OVO</button>
+    <button class="pay-btn" onclick="showPopup('GOPAY', '085753295675')">💚 GOPAY</button>
+    <button class="pay-btn" onclick="showQRIS()">💠 QRIS</button>
+    <p class="credit">© Credit @DebbNotDev</p>
+  </div>
+
+  <!-- Popup -->
+  <div class="popup" id="popup">
+    <h3 id="popupTitle"></h3>
+    <p id="popupContent"></p>
+    <img id="popupImage" src="" alt="" style="display:none;">
+    <button class="close-btn" onclick="closePopup()">Tutup</button>
+  </div>
+
+  <script>
+    // Popup tampil nomor rekening
+    function showPopup(method, number) {
+      document.getElementById('popupTitle').innerText = method + ' Payment';
+      document.getElementById('popupContent').innerText = 'No Rekening / Nomor: ' + number;
+      document.getElementById('popupImage').style.display = 'none';
+      document.getElementById('popup').classList.add('active');
+    }
+
+    // Popup QRIS dengan gambar dari catbox
+    function showQRIS() {
+      const img = document.getElementById('popupImage');
+      document.getElementById('popupTitle').innerText = 'QRIS Payment';
+      document.getElementById('popupContent').innerText = 'Scan QRIS untuk melakukan pembayaran:';
+      img.src = 'https://files.catbox.moe/a5famh.jpg'; // GANTI dengan link catbox kamu
+      img.style.display = 'block';
+      document.getElementById('popup').classList.add('active');
+    }
+
+    // Tutup popup
+    function closePopup() {
+      document.getElementById('popup').classList.remove('active');
+    }
+
+    // Efek partikel
+    for (let i = 0; i < 60; i++) {
+      const p = document.createElement('div');
+      p.classList.add('particle');
+      p.style.left = Math.random() * 100 + '%';
+      p.style.top = Math.random() * 100 + '%';
+      p.style.animationDuration = 5 + Math.random() * 10 + 's';
+      document.body.appendChild(p);
+    }
+  </script>
+
+</body>
+</html>
